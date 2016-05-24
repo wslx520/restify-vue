@@ -1,0 +1,16 @@
+{
+  "name": "restify-vue",
+  "version": "1.0.0",
+  "description": "打算用restify+vue.js做点东西",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "XLee",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.4",
+    "gulp": "^3.9.1",
+    "restify": "^4.1.0"
+  }
+}
