@@ -3,7 +3,7 @@
 const restify = require('restify');
 const fs = require('fs');
 
-const Server = require('./static');
+const Server = require('./staticServer');
 
-new Server({}).start(3001);
+new Server({dir:'./static'}).start(3001);
 

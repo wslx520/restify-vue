@@ -59,14 +59,17 @@ let StaticServer = function (option = {}) {
         let pathname = url.parse(request.url).pathname;
         pathname = path.normalize(pathname).replace('../','').replace('..\\','');
         let realPath = dir + pathname;
-        let ext = path.extname(realPath).slice(1);
-        if(!ext) ext = 'unknown';
-        // console.log(pathname, realPath, ext);
+        console.log(pathname, realPath);
         fs.stat(realPath, function (err, stat) {
             if(err) {
                 response.writeHead(404, err);
                 response.end();
             } else {
+            	if(stat.isDirectory()) {
+            		realPath += '/index.html';
+            	}
+        		let ext = path.extname(realPath).slice(1);
+        		if(!ext) ext = 'unknown';
                 cacheFileTypes.fileMatch.lastIndex = 0;
                 if(cacheFileTypes.fileMatch.test(ext)) {
                     let expires = new Date();
