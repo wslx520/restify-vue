@@ -5,15 +5,18 @@ const fs = require('fs');
 
 const Server = require('./staticServer');
 
-// new Server({dir:'./static'}).start(3001);
+new Server({dir:'./static'}).start(3001);
 var server = restify.createServer();
 
-// server.get('/', restify.serveStatic())
+server.get('/', restify.serveStatic({
+	directory:'./static',
+	file:'index.html'
+}))
 // 用restify来实现静态文件路由
-server.get(/\/|\.(js|html|css|jpg|jpeg|gif|png)/, restify.serveStatic({
+server.get(/.(js|html|css|jpg|jpeg|gif|png)/, restify.serveStatic({
   directory: './static'
 }));
 
-server.listen(3900, function() {
-  console.log('%s listening at %s', server.name, server.url);
-});
+// server.listen(3900, function() {
+//   console.log('%s listening at %s', server.name, server.url);
+// });
