@@ -61,7 +61,7 @@ let StaticServer = function (option = {}) {
         let realPath = dir + pathname;
         let ext = path.extname(realPath).slice(1);
         if(!ext) ext = 'unknown';
-        // console.log(pathname, realPath, ext);
+        console.log(pathname, realPath, ext);
         fs.stat(realPath, function (err, stat) {
             if(err) {
                 response.writeHead(404, err);
