@@ -53,10 +53,13 @@ let xStatic = function (dir, ops={
 }) {
     let maxAge = ops.maxAge;
     return function (request, response, next) {
-        console.log(request.url)
+        console.log(request.url, next)
         let pathname = url.parse(request.url).pathname;
         pathname = path.normalize(pathname).replace('../','');
         let realPath = dir + pathname;
+        if(path.extname(realPath) && !mimeTypes[path.extname(realPath)]) {
+            return next();
+        }
         fs.stat(realPath, function (err, stat) {
             if(err) {
                 if(typeof next === 'function') return next();
@@ -109,6 +112,7 @@ let xStatic = function (dir, ops={
                 // response.end();
             }
         })
+        if(next) next()
     }
 }
 
