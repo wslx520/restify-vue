@@ -29,7 +29,7 @@ const mimeTypes = {
 const oneday = 60 * 60 * 24;
 // 指定这些后缀文件的缓存时间
 const cacheFileTypes = {
-    fileMatch: /^(htm|html|gif|png|jpg|jpeg|jpe|js|css)$/ig,
+    fileMatch: /^\.?(htm|html|gif|png|jpg|jpeg|jpe|js|css)$/ig,
     maxAge: oneday * 365
 };
 // 这些后缀会gzip
@@ -57,8 +57,8 @@ let xStatic = function (dir, ops={
         pathname = path.normalize(pathname).replace('../','');
         let realPath = dir + pathname;
         let ext = path.extname(realPath).slice(1);
-        console.log('extname :', ext,mimeTypes[ext],ext && !mimeTypes[ext])
-        if(ext && !mimeTypes[ext]) {
+        // console.log('extname :', ext,mimeTypes[ext],ext && !mimeTypes[ext])
+        if(next && ext && !mimeTypes[ext]) {
             return next();
         }
         fs.stat(realPath, function (err, stat) {
@@ -85,7 +85,7 @@ let xStatic = function (dir, ops={
                     response.setHeader('Cache-Control', 'max-age=' + maxAge);
                 
                     let ifModified = request.headers['if-modified-since'];
-                    console.log(lastModified, ifModified)
+                    // console.log(lastModified, ifModified)
                     if(ifModified && ifModified == lastModified) {
                         response.writeHead(304,"Not Modified");
                         response.end();
