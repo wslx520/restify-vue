@@ -53,14 +53,16 @@ let xStatic = function (dir, ops={
 }) {
     let maxAge = ops.maxAge;
     return function (request, response, next) {
-        console.log(request.url, next)
         let pathname = url.parse(request.url).pathname;
         pathname = path.normalize(pathname).replace('../','');
         let realPath = dir + pathname;
-        if(path.extname(realPath) && !mimeTypes[path.extname(realPath)]) {
+        let ext = path.extname(realPath).slice(1);
+        console.log('extname :', ext,mimeTypes[ext],ext && !mimeTypes[ext])
+        if(ext && !mimeTypes[ext]) {
             return next();
         }
         fs.stat(realPath, function (err, stat) {
+            console.log(err, stat)
             if(err) {
                 if(typeof next === 'function') return next();
                 response.writeHead(404, err);
@@ -68,13 +70,13 @@ let xStatic = function (dir, ops={
             } else {
             	if(stat.isDirectory()) {
             		realPath += ops.defaultPage;
+                    ext = path.extname(ops.defaultPage).slice(1);
             	}
-        		let ext = path.extname(realPath).slice(1);
         		if(!ext) ext = 'unknown';
-                // console.log(path.extname('ddd.js?a=1&b3'))
                 cacheFileTypes.fileMatch.lastIndex = 0;
                 let lastModified = stat.mtime.toUTCString();
                 response.setHeader("Last-Modified", lastModified);
+                console.log(ext)
                 if(ops.cache && cacheFileTypes.fileMatch.test(ext)) {
                     let expires = new Date();
                     // * 1000 是因为setTime是设置的毫秒
@@ -83,7 +85,7 @@ let xStatic = function (dir, ops={
                     response.setHeader('Cache-Control', 'max-age=' + maxAge);
                 
                     let ifModified = request.headers['if-modified-since'];
-                    // console.log(lastModified, ifModified)
+                    console.log(lastModified, ifModified)
                     if(ifModified && ifModified == lastModified) {
                         response.writeHead(304,"Not Modified");
                         response.end();

@@ -26,6 +26,10 @@ server.use(ss);
 // console.log(restify.serveStatic({
 //   directory: './static'
 // }).toString())
+server.get(/\.(js|css|html|htm)/, function (request, response) {
+    // console.log('你请求的是静态文件',request.query())
+    // response.send('你请求的是静态文件')
+})
 server.get('/', function (req,res,next) {
     // console.log('/////////////')
     next();
