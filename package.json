@@ -11,6 +11,8 @@
   "dependencies": {
     "express": "^4.13.4",
     "gulp": "^3.9.1",
+    "gulp-ruby-sass": "^2.0.6",
+    "gulp-sass": "^2.3.1",
     "restify": "^4.1.0"
   }
 }
